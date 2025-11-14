@@ -82,4 +82,5 @@ if query:
                 st.warning("Xin lỗi, tôi chưa có thông tin về câu hỏi này.")
 
         except Exception as e:
-            st.error(f"⚠️ Lỗi khi tạo câu trả lời: {e}")
+            st.error(f"Lỗi khi tạo câu trả lời: {e}")
+
