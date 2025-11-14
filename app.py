@@ -10,7 +10,6 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 st.set_page_config(page_title="Chatbot Du Lịch Hà Nội", layout="wide")
 st.title("Chatbot Du Lịch Hà Nội")
-st.write("Hỏi tôi về **địa điểm**, **ẩm thực**, hoặc **trải nghiệm** ở Hà Nội nhé!")
 
 @st.cache_resource()
 def load_chatbot():
@@ -83,4 +82,5 @@ if query:
 
         except Exception as e:
             st.error(f"Lỗi khi tạo câu trả lời: {e}")
+
 
