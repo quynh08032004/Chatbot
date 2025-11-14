@@ -10,14 +10,12 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 st.set_page_config(page_title="Chatbot Du Lịch Hà Nội", layout="wide")
 st.title("Chatbot Du Lịch Hà Nội")
+st.write("Hỏi tôi về **địa điểm**, **ẩm thực**, hoặc **trải nghiệm** ở Hà Nội nhé!")
 
 @st.cache_resource()
 def load_chatbot():
-    # Đường dẫn file
     data_path = os.path.join(os.getcwd(), "hn_tour_cuisine_dataset_seed.csv")
     vector_db_path = os.path.join(os.getcwd(), "vectorstores")
-
-    # Đọc dữ liệu CSV
     data = pd.read_csv(data_path).fillna("")
 
     embedding_model = GPT4AllEmbeddings(model_file="models/all-MiniLM-L6-v2-f16.gguf")
@@ -62,12 +60,10 @@ if query:
                 matched_question = data.loc[best_idx, "question_vi"]
                 original_answer = data.loc[best_idx, "answer_vi"]
 
-                # --- Dùng LLM để viết lại tự nhiên ---
                 prompt = f"""
                 Bạn là chatbot du lịch Hà Nội thân thiện và hữu ích.
-                Người dùng hỏi: "{query}"
-                Câu hỏi gốc: "{matched_question}"
-                Câu trả lời chính xác: "{original_answer}"
+                Câu hỏi gốc: {matched_question}
+                Câu trả lời chính xác: {original_answer}
 
                 Hãy viết lại câu trả lời trên sao cho tự nhiên, dễ hiểu.
                 Không được bịa thêm thông tin,không thêm thông tin khác.
@@ -76,11 +72,10 @@ if query:
                 answer = llm(prompt).strip()
 
                 st.success(answer)
+                st.caption(f" Khớp với: {matched_question} (score={best_score:.2f})")
 
             else:
                 st.warning("Xin lỗi, tôi chưa có thông tin về câu hỏi này.")
 
         except Exception as e:
             st.error(f"Lỗi khi tạo câu trả lời: {e}")
-
-
